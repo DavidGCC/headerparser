@@ -5,7 +5,7 @@
 require('dotenv').config();
 var express = require('express');
 var app = express();
-const publicIp = require("public-ip");
+app.set("trust proxy", true)
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC
 var cors = require('cors');
@@ -25,8 +25,8 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/whoami", async (req, res) => {
-    const ipaddress = await publicIp.v4();
+app.get("/api/whoami", (req, res) => {
+    const ipaddress = req.ip;
     const language = req.headers["accept-language"];
     const software = req.headers["user-agent"];
     const result = { ipaddress, language, software };
